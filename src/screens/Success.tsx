@@ -11,7 +11,9 @@ export default function Success() {
         Uninstalled successfully
       </Typography>
       <Box display="flex" justifyContent="center">
-        <Button variant="contained">CLOSE</Button>
+        <Button variant="contained" onClick={window.Main.closeInstaller}>
+          CLOSE
+        </Button>
       </Box>
     </>
   )
