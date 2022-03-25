@@ -31,7 +31,7 @@ export default function Home({
           somewhere safe)
         </Typography>
         <Typography marginTop={1}>
-          Remove the resources from your system
+          Remove the point directory from your system
         </Typography>
       </Box>
       <Box display="flex" alignItems="center" marginBottom={2}>
