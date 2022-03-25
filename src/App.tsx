@@ -5,9 +5,12 @@ import Box from '@mui/material/Box'
 import UIThemeProvider from './components/UIThemeProvider'
 // screens
 import HomeScreen from './screens/Home'
+import UninstallScreen from './screens/Uninstall'
+import SuccessScreen from './screens/Success'
 
 export function App() {
   const [isCheckboxChecked, setIsCheckboxChecked] = useState<boolean>(false)
+  const [whichStep, setWhichStep] = useState<number>(1)
 
   const beginUninstallation = () => {
     console.log('beginUninstallation')
@@ -16,11 +19,15 @@ export function App() {
   return (
     <UIThemeProvider>
       <Box p="3%">
-        <HomeScreen
-          isCheckboxChecked={isCheckboxChecked}
-          setIsCheckboxChecked={setIsCheckboxChecked}
-          beginUninstallation={beginUninstallation}
-        />
+        {whichStep === 1 && (
+          <HomeScreen
+            isCheckboxChecked={isCheckboxChecked}
+            setIsCheckboxChecked={setIsCheckboxChecked}
+            beginUninstallation={beginUninstallation}
+          />
+        )}
+        {whichStep === 2 && <UninstallScreen />}
+        {whichStep === 3 && <SuccessScreen />}
       </Box>
     </UIThemeProvider>
   )
