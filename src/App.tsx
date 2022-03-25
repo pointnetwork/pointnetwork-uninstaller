@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 // Material UI
 import Box from '@mui/material/Box'
 // Components
@@ -7,14 +7,21 @@ import UIThemeProvider from './components/UIThemeProvider'
 import HomeScreen from './screens/Home'
 import UninstallScreen from './screens/Uninstall'
 import SuccessScreen from './screens/Success'
+// Electron
+import { UNINSTALL_FINISH, UNINSTALL_STARTED } from '../electron/channels'
 
 export function App() {
   const [isCheckboxChecked, setIsCheckboxChecked] = useState<boolean>(false)
   const [whichStep, setWhichStep] = useState<number>(1)
 
   const beginUninstallation = () => {
-    console.log('beginUninstallation')
+    window.Main.startInstallation()
   }
+
+  useEffect(() => {
+    window.Main.on(UNINSTALL_STARTED, () => setWhichStep(2))
+    window.Main.on(UNINSTALL_FINISH, () => setWhichStep(3))
+  }, [])
 
   return (
     <UIThemeProvider>
