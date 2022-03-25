@@ -1,0 +1,5 @@
+export const UNINSTALL_START = 'uninstall:start'
+export const UNINSTALL_STARTED = 'uninstall:started'
+export const UNINSTALL_LOG = 'uninstall:log'
+export const UNINSTALL_FINISH = 'uninstall:finish'
+export const UNINSTALL_CLOSE = 'uninstall:close'
