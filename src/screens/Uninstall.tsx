@@ -1,8 +1,19 @@
+import { useEffect, useState } from 'react'
 // Material UI
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
+// Electron
+import { UNINSTALL_LOG } from '../../electron/channels'
 
 export default function Uninstall() {
+  const [logs, setLogs] = useState<string[]>([])
+
+  useEffect(() => {
+    window.Main.on(UNINSTALL_LOG, (log: string) => {
+      setLogs(prev => [...prev, log])
+    })
+  }, [])
+
   return (
     <Box
       display={'flex'}
@@ -19,8 +30,9 @@ export default function Uninstall() {
         flex={1}
         sx={{ overflowY: 'auto' }}
       >
-        <Typography>Logs</Typography>
-        <Typography>Logs</Typography>
+        {logs.map(log => (
+          <Typography key={log}>{log}</Typography>
+        ))}
       </Box>
     </Box>
   )
