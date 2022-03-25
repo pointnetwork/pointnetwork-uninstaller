@@ -1,4 +1,11 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
+import {
+  UNINSTALL_START,
+  UNINSTALL_STARTED,
+  UNINSTALL_FINISH,
+  UNINSTALL_CLOSE,
+  UNINSTALL_LOG,
+} from './channels'
 
 let mainWindow: BrowserWindow | null
 
@@ -27,8 +34,21 @@ function createWindow() {
 }
 
 async function registerListeners() {
-  ipcMain.on('message', (_, message) => {
-    console.log(message)
+  ipcMain.on(UNINSTALL_START, () => {
+    console.log(UNINSTALL_START)
+    mainWindow!.webContents.send(UNINSTALL_STARTED)
+    console.log(UNINSTALL_STARTED)
+    mainWindow!.webContents.send(UNINSTALL_LOG, 'Test log 1')
+    mainWindow!.webContents.send(UNINSTALL_LOG, 'Test log 2')
+    setTimeout(() => {
+      mainWindow!.webContents.send(UNINSTALL_FINISH)
+      console.log(UNINSTALL_FINISH)
+    }, 3000)
+  })
+
+  ipcMain.on(UNINSTALL_CLOSE, () => {
+    console.log(UNINSTALL_START)
+    mainWindow!.close()
   })
 }
 
