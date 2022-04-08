@@ -84,7 +84,6 @@ jobs:
         asset_name: point-${{ needs.create_release.outputs.release_name }}-MacOS-portable.tar.gz
         asset_content_type: application/gzip
 
-
   build_on_win:
     runs-on: windows-latest
     needs: create_release
