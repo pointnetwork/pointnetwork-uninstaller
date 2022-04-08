@@ -2,7 +2,7 @@
 
 # This script will rename, add execution permissions and compress point executables.
 
-MAC_FILE=./out/pointnetwork-dashboard-darwin-x64/pointnetwork-dashboard-uninstaller.app
+MAC_FILE=./out/pointnetwork-uninstaller-darwin-x64/pointnetwork-uninstaller.app
 
 mkdir -p ./out/mac_executables/pkg
 chmod +x $MAC_FILE

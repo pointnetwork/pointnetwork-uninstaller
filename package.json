@@ -68,7 +68,7 @@
   "config": {
     "forge": {
       "packagerConfig": {
-        "name": "Pointnetwork Uninstaller",
+        "name": "pointnetwork-uninstaller",
         "executableName": "pointnetwork-uninstaller",
         "icon": "assets/icon",
         "extraResource": [

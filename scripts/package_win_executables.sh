@@ -4,7 +4,7 @@
 
 VERSION=$(awk -F'"' '/"version": ".+"/{ print $4; exit; }' package.json)
 
-WIN_FILE="./out/make/squirrel.windows/x64/pointnetwork-dashboard-uninstaller-${VERSION} Setup.exe"
+WIN_FILE="./out/make/squirrel.windows/x64/pointnetwork-uninstaller-${VERSION} Setup.exe"
 
 mkdir -p ./out/win_executables/pkg
 chmod +x "$WIN_FILE"
