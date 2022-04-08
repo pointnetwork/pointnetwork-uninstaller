@@ -1,6 +1,8 @@
 name: Build
-
-on: [push, pull_request]
+on:
+  push:
+    tags:
+      - 'v*'
 
 jobs:
   create_release:
@@ -45,7 +47,7 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
       with:
         upload_url: ${{ needs.create_release.outputs.release_upload_url }}
-        asset_path: ./out/linux_executables/point-dashboard-deb.tar.gz
+        asset_path: ./out/linux_executables/pointnetwork-uninstaller-deb.tar.gz
         asset_name: point-${{ needs.create_release.outputs.release_name }}-Linux-Debian-Ubuntu.tar.gz
         asset_content_type: application/gzip
     - name: Upload linux rpm artefact
@@ -54,7 +56,7 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
       with:
         upload_url: ${{ needs.create_release.outputs.release_upload_url }}
-        asset_path: ./out/linux_executables/point-dashboard-rpm.tar.gz
+        asset_path: ./out/linux_executables/pointnetwork-uninstaller-rpm.tar.gz
         asset_name: point-${{ needs.create_release.outputs.release_name }}-Linux-RPM-Centos-Fedora.tar.gz
         asset_content_type: application/gzip
 
@@ -80,7 +82,7 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
       with:
         upload_url: ${{ needs.create_release.outputs.release_upload_url }}
-        asset_path: ./out/mac_executables/point-dashboard.tar.gz
+        asset_path: ./out/mac_executables/pointnetwork-uninstaller.tar.gz
         asset_name: point-${{ needs.create_release.outputs.release_name }}-MacOS-portable.tar.gz
         asset_content_type: application/gzip
 
@@ -118,15 +120,14 @@ jobs:
         WINDOWS_PFX_FILE: ${{ steps.write_file.outputs.filePath }}
         WINDOWS_PFX_PASSWORD: ${{ secrets.WINDOWS_PFX_PASSWORD }}
 
-    - name: Compress and package executables
+    - name: Compress and package installer
       run: bash ./scripts/package_win_executables.sh
-    - name: Upload win executable
-     uses: actions/upload-release-asset@v1
+    - name: Upload win installer
+      uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ github.token }}
       with:
         upload_url: ${{ needs.create_release.outputs.release_upload_url }}
-        asset_path: ./out/win_executables/point-dashboard.zip
-        asset_name: point-${{ needs.create_release.outputs.release_name }}-Windows-portable.zip
+        asset_path: ./out/win_executables/pointnetwork-uninstaller.zip
+        asset_name: point-${{ needs.create_release.outputs.release_name }}-Windows-installer.zip
         asset_content_type: application/gzip
-
