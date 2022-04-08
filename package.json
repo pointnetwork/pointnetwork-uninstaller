@@ -68,8 +68,8 @@
   "config": {
     "forge": {
       "packagerConfig": {
-        "name": "Electron starter",
-        "executableName": "electron-starter",
+        "name": "pointnetwork-uninstaller",
+        "executableName": "pointnetwork-uninstaller",
         "icon": "assets/icon",
         "extraResource": [
           "assets"
@@ -100,7 +100,7 @@
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "Electron Starter"
+            "name": "pointnetwork-uninstaller"
           }
         },
         {
@@ -111,11 +111,15 @@
         },
         {
           "name": "@electron-forge/maker-deb",
-          "config": {}
+          "config": {
+            "icon": "assets/icon.png"
+          }
         },
         {
           "name": "@electron-forge/maker-rpm",
-          "config": {}
+          "config": {
+            "icon": "assets/icon.png"
+          }
         }
       ]
     }
