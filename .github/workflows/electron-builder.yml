@@ -1,8 +1,8 @@
 name: Build
 on:
   push:
-#    tags:
-#      - 'v*'
+   tags:
+     - 'v*'
 
 jobs:
   create_release:
@@ -105,19 +105,8 @@ jobs:
 
     - name: Install dependencies
       run: npm install
-#    - name: config msvs
-#      run: npm config set msvs_version 2022
     - name: Build executables
       run: npm run make
-#    - name: Set path for candle and light
-#      run: echo "C:\Program Files (x86)\WiX Toolset v3.11\bin" >> $GITHUB_PATH
-#      shell: bash
-#    - name: Build Installer
-#      run: npm run create-installer-win
-#      env:
-#        WINDOWS_PFX_FILE: ${{ steps.write_file.outputs.filePath }}
-#        WINDOWS_PFX_PASSWORD: ${{ secrets.WINDOWS_PFX_PASSWORD }}
-
     - name: Compress and package installer
       run: bash ./scripts/package_win_executables.sh
     - name: Upload win installer
