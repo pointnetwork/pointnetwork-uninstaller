@@ -1,8 +1,8 @@
 name: Build
 on:
   push:
-   tags:
-     - 'v*'
+#   tags:
+#     - 'v*'
 
 jobs:
   create_release:
@@ -115,6 +115,6 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
       with:
         upload_url: ${{ needs.create_release.outputs.release_upload_url }}
-        asset_path: ./out/win_executables/pointnetwork-uninstaller.zip
-        asset_name: point-uninstaller-${{ needs.create_release.outputs.release_name }}-Windows-installer.zip
+        asset_path: ./out/win_executables/pointnetwork-uninstaller.tar.gz
+        asset_name: point-uninstaller-${{ needs.create_release.outputs.release_name }}-Windows-installer.tar.gz
         asset_content_type: application/gzip
