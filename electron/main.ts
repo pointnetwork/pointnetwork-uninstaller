@@ -48,15 +48,15 @@ function createWindow() {
 const killCmd = platform === 'win32' ? 'taskkill /F /PID' : 'kill'
 const killProcesses = async (processes: Process[], label: string) => {
   if (processes.length > 0) {
-    logger.info(`Stopping running processes for PointNetwork ${label}`)
+    logger.info(`Stopping running processes for Point ${label}`)
     for (const p of processes) {
-      logger.info('Stopping PointNetwork Browser process ', p.pid.toString())
+      logger.info(`Stopping Point ${label} process `, p.pid.toString())
       await exec(`${killCmd} ${p.pid}`)
-      logger.info('Stopped PointNetwork Browser process ', p.pid.toString())
+      logger.info(`Stopped Point ${label} process `, p.pid.toString())
     }
-    logger.info(`Stopped running processes for PointNetwork ${label}`)
+    logger.info(`Stopped running processes for Point ${label}`)
   } else {
-    logger.info(`No running processes for PointNetwork ${label} found`)
+    logger.info(`No running processes for Point ${label} found`)
   }
 }
 
@@ -69,30 +69,30 @@ async function registerListeners() {
       // Send test logs
       logger.info('Starting uninstallation')
       // Find firefox and kill any running processes
-      logger.info('Finding running processes for PointNetwork Browser')
+      logger.info('Finding running processes for Point Browser')
       let processes: Process[] = (await find('name', /firefox/i)).filter(
         (p: Process) =>
           p.cmd.includes('point-browser') && !p.cmd.includes('tab')
       )
       await killProcesses(processes, 'Browser')
 
-      // Find PointNetwork Node and kill any running processes
-      logger.info('Finding running processes for PointNetwork Node')
+      // Find Point Node and kill any running processes
+      logger.info('Finding running processes for Point Node')
       processes = await find('name', 'point', true)
       await killProcesses(processes, 'Node')
 
-      // Find PointNetwork Dashboard and kill any running processes
-      logger.info('Finding running processes for PointNetwork Dashboard')
-      processes = await find('name', 'pointnetwork-dashboard', true)
+      // Find Point Dashboard and kill any running processes
+      logger.info('Finding running processes for Point Dashboard')
+      processes = await find('name', 'point-dashboard', true)
       await killProcesses(processes, 'Dashboard')
 
       // Remove the .point directory
       logger.info(
-        'Removing saved key phrases and pointnetwork resources within .point directory'
+        'Removing saved key phrases and point resources within .point directory'
       )
       try {
         logger.info(
-          'Removed saved key phrases and pointnetwork resources within .point directory'
+          'Removed saved key phrases and point resources within .point directory'
         )
         const deleteFolderRecursive = function (path: string) {
           if (fs.existsSync(path)) {
@@ -110,7 +110,7 @@ async function registerListeners() {
         deleteFolderRecursive(path.join(os.homedir(), '.point'))
       } catch (error) {
         logger.info(
-          'Unable to Remove saved key phrases and pointnetwork resources within .point directory'
+          'Unable to Remove saved key phrases and point resources within .point directory'
         )
       }
 
