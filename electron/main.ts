@@ -76,15 +76,10 @@ async function registerListeners() {
       )
       await killProcesses(processes, 'Browser')
 
-      // Find Point Node and kill any running processes
+      // Find Point Node & Dashboard and kill any running processes
       logger.info('Finding running processes for Point Node')
       processes = await find('name', 'point', true)
       await killProcesses(processes, 'Node')
-
-      // Find Point Dashboard and kill any running processes
-      logger.info('Finding running processes for Point Dashboard')
-      processes = await find('name', 'point-dashboard', true)
-      await killProcesses(processes, 'Dashboard')
 
       // Remove the .point directory
       logger.info(
