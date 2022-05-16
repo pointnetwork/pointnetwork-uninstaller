@@ -9,6 +9,7 @@ import {
 import { exec } from 'child_process'
 import { platform } from 'process'
 import type { Process } from '../src/@types/process'
+import Logger from '../utils/logger'
 
 const fs = require('fs')
 const os = require('os')
@@ -16,6 +17,7 @@ const path = require('path')
 const find = require('find-process')
 
 let mainWindow: BrowserWindow | null
+let logger: Logger
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string
@@ -35,31 +37,26 @@ function createWindow() {
   })
 
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
+  logger = new Logger({ window: mainWindow, channel: UNINSTALL_LOG })
 
   mainWindow.on('closed', () => {
     mainWindow = null
   })
 }
 
-// Function to send the logs to the UI
-const log2UI = (...args: any) => {
-  console.log(...args)
-  mainWindow!.webContents.send(UNINSTALL_LOG, args)
-}
-
 // Function to kill the processes while also sending kill logs to UI
 const killCmd = platform === 'win32' ? 'taskkill /F /PID' : 'kill'
 const killProcesses = async (processes: Process[], label: string) => {
   if (processes.length > 0) {
-    log2UI(`Stopping running processes for PointNetwork ${label}`)
+    logger.info(`Stopping running processes for Point ${label}`)
     for (const p of processes) {
-      log2UI('Stopping PointNetwork Browser process ', p.pid)
+      logger.info(`Stopping Point ${label} process `, p.pid.toString())
       await exec(`${killCmd} ${p.pid}`)
-      log2UI('Stopped PointNetwork Browser process ', p.pid)
+      logger.info(`Stopped Point ${label} process `, p.pid.toString())
     }
-    log2UI(`Stopped running processes for PointNetwork ${label}`)
+    logger.info(`Stopped running processes for Point ${label}`)
   } else {
-    log2UI(`No running processes for PointNetwork ${label} found`)
+    logger.info(`No running processes for Point ${label} found`)
   }
 }
 
@@ -70,32 +67,27 @@ async function registerListeners() {
       // // Send the uninstall started event
       mainWindow!.webContents.send(UNINSTALL_STARTED)
       // Send test logs
-      log2UI('Starting uninstallation')
+      logger.info('Starting uninstallation')
       // Find firefox and kill any running processes
-      log2UI('Finding running processes for PointNetwork Browser')
+      logger.info('Finding running processes for Point Browser')
       let processes: Process[] = (await find('name', /firefox/i)).filter(
         (p: Process) =>
           p.cmd.includes('point-browser') && !p.cmd.includes('tab')
       )
       await killProcesses(processes, 'Browser')
 
-      // Find PointNetwork Node and kill any running processes
-      log2UI('Finding running processes for PointNetwork Node')
+      // Find Point Node & Dashboard and kill any running processes
+      logger.info('Finding running processes for Point Node')
       processes = await find('name', 'point', true)
       await killProcesses(processes, 'Node')
 
-      // Find PointNetwork Dashboard and kill any running processes
-      log2UI('Finding running processes for PointNetwork Dashboard')
-      processes = await find('name', 'pointnetwork-dashboard', true)
-      await killProcesses(processes, 'Dashboard')
-
       // Remove the .point directory
-      log2UI(
-        'Removing saved key phrases and pointnetwork resources within .point directory'
+      logger.info(
+        'Removing saved key phrases and point resources within .point directory'
       )
       try {
-        log2UI(
-          'Removed saved key phrases and pointnetwork resources within .point directory'
+        logger.info(
+          'Removed saved key phrases and point resources within .point directory'
         )
         const deleteFolderRecursive = function (path: string) {
           if (fs.existsSync(path)) {
@@ -112,12 +104,12 @@ async function registerListeners() {
         }
         deleteFolderRecursive(path.join(os.homedir(), '.point'))
       } catch (error) {
-        log2UI(
-          'Unable to Remove saved key phrases and pointnetwork resources within .point directory'
+        logger.info(
+          'Unable to Remove saved key phrases and point resources within .point directory'
         )
       }
 
-      log2UI('Uninstall finished successfully')
+      logger.info('Uninstall finished successfully')
       mainWindow!.webContents.send(UNINSTALL_FINISH)
     } catch (error) {
       console.log(error)
