@@ -36,28 +36,19 @@ jobs:
     - name: Install dependencies
       run: npm cache --force clean && npm install --force
     - name: Build executables
-      run: npm run make
+      run: npm run package
 
     - name: Compress and package executables
       run: ./scripts/package_linux_executables.sh
 
-    - name: Upload linux deb artefact
+    - name: Upload linux package
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ github.token }}
       with:
         upload_url: ${{ needs.create_release.outputs.release_upload_url }}
-        asset_path: ./out/linux_executables/pointnetwork-uninstaller-deb.tar.gz
-        asset_name: point-uninstaller-${{ needs.create_release.outputs.release_name }}-Linux-Debian-Ubuntu.tar.gz
-        asset_content_type: application/gzip
-    - name: Upload linux rpm artefact
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-      with:
-        upload_url: ${{ needs.create_release.outputs.release_upload_url }}
-        asset_path: ./out/linux_executables/pointnetwork-uninstaller-rpm.tar.gz
-        asset_name: point-uninstaller-${{ needs.create_release.outputs.release_name }}-Linux-RPM-Centos-Fedora.tar.gz
+        asset_path: ./out/linux_executables/pointnetwork-uninstaller-linux-x64.tar.gz
+        asset_name: point-uninstaller-${{ needs.create_release.outputs.release_name }}-linux.tar.gz
         asset_content_type: application/gzip
 
   build_on_mac:
@@ -71,7 +62,7 @@ jobs:
     - name: Install dependencies
       run: npm install
     - name: Build Installer dist
-      run: npm run make
+      run: npm run package
     - name: Compress and package executables
       run: ./scripts/package_macos_executables.sh
     - name: Upload macos executable
@@ -80,8 +71,8 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
       with:
         upload_url: ${{ needs.create_release.outputs.release_upload_url }}
-        asset_path: ./out/mac_executables/pointnetwork-uninstaller.tar.gz
-        asset_name: point-uninstaller-${{ needs.create_release.outputs.release_name }}-MacOS-portable.tar.gz
+        asset_path: ./out/mac_executables/pointnetwork-uninstaller-darwin-x64.tar.gz
+        asset_name: point-uninstaller-${{ needs.create_release.outputs.release_name }}-macos.tar.gz
         asset_content_type: application/gzip
 
   build_on_win:
@@ -106,7 +97,7 @@ jobs:
     - name: Install dependencies
       run: npm install
     - name: Build executables
-      run: npm run make
+      run: npm run package
     - name: Compress and package installer
       run: bash ./scripts/package_win_executables.sh
     - name: Upload win installer
@@ -116,5 +107,5 @@ jobs:
       with:
         upload_url: ${{ needs.create_release.outputs.release_upload_url }}
         asset_path: ./out/win_executables/pointnetwork-uninstaller.zip
-        asset_name: point-uninstaller-${{ needs.create_release.outputs.release_name }}-Windows-installer.zip
+        asset_name: point-uninstaller-${{ needs.create_release.outputs.release_name }}-windows.zip
         asset_content_type: application/gzip
