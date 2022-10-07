@@ -1,7 +1,7 @@
 {
   "name": "pointnetwork-uninstaller",
   "author": "Point Labs",
-  "version": "0.0.1",
+  "version": "0.0.6",
   "description": "A package to uninstall PointNetwork resources",
   "main": "./.webpack/main",
   "scripts": {
