@@ -28,7 +28,7 @@ const ERROR_HINTS = {
   POINT_DIR: {
     win32: FAILED_TO_REMOVE_DIR + 'C:\\Users\\<your_user_name>\\.point',
     linux: FAILED_TO_REMOVE_DIR + '~/.point',
-    darwin: '~/.point',
+    darwin: FAILED_TO_REMOVE_DIR + '~/.point',
   },
   POINT_SOFTWARE: {
     win32:
